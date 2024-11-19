@@ -35,4 +35,4 @@ git push -u origin
 semgrep --config prototype-pollution-rule.yaml prototypePollutionTest.js
 ```
 
-<img src="ppr.png" alt="Project Structure" width="400"/>
+<img src="ppr.png" alt="Project Structure" width="700"/>
