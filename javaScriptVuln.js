@@ -13,7 +13,7 @@ db.query(query, [username]);
 
 // XSS vulnerability
 function displayUserInput(input) {
-    document.getElementById('output').innerHTML = input;
+    document.getElementById('output').textContent = userInput;
 }
 
 // Insecure cryptography
