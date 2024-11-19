@@ -8,34 +8,28 @@ A comprehensive guide for setting up and testing Semgrep security rules, focusin
 
 ```bash
 # Create and initialize repository
-gh repo create "semgrep-security-rules" --public
-mkdir semgrep-security-rules
-cd semgrep-security-rules
+gh repo create "testSemgrep" --public
 git init
 git remote add origin <your-github-repo-url>
 git branch -M main
 
 # Create project structure
-mkdir rules tests
+touch prototypePollutionTest.js
+touch prototype-pollution-rule.yaml
 touch README.md
-```
+# Stage changes
+git add .
+# Commit changes
+git commit -m "Your Comments"
+# Status of version
+git status
+# Push to GitHub
+git push -u origin
 
-```bash
-# Testing
+# Testing the rule against test file
 # Test specific rule
 semgrep --config rules/prototype-pollution.yaml tests/prototype-pollution-test.js
 
 # Test all rules
 semgrep --config rules/ tests/
-```
-
-```bash
-# Stage changes
-git add .
-
-# Commit changes
-git commit -m "feat: add prototype pollution detection rule"
-
-# Push to GitHub
-git push -u origin main
 ```
