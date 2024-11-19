@@ -17,19 +17,24 @@ git branch -M main
 touch prototypePollutionTest.js
 touch prototype-pollution-rule.yaml
 touch README.md
+
 # Stage changes
 git add .
+
 # Commit changes
 git commit -m "Your Comments"
+
 # Status of version
 git status
+
 # Push to GitHub
 git push -u origin
 
 # Testing the rule against test file
 # Test specific rule
-semgrep --config rules/prototype-pollution.yaml tests/prototype-pollution-test.js
+semgrep --config prototype-pollution-rule.yaml prototypePollutionTest.js
 
-# Test all rules
-semgrep --config rules/ tests/
+
+![Project Structure](ppr.png)
+
 ```
