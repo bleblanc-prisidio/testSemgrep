@@ -1,7 +1,8 @@
 // Vulnerable authentication function
 function authenticateUser(username, password) {
-    // SQL Injection vulnerability
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+    // SQL Injection vulnerability update
+    const query = 'SELECT * FROM users WHERE username = ?';
+db.query(query, [username]);
     
     // Command injection vulnerability
     const exec = require('child_process').exec;
