@@ -19,3 +19,23 @@ git branch -M main
 mkdir rules tests
 touch README.md
 ```
+
+```bash
+# Testing
+# Test specific rule
+semgrep --config rules/prototype-pollution.yaml tests/prototype-pollution-test.js
+
+# Test all rules
+semgrep --config rules/ tests/
+```
+
+```bash
+# Stage changes
+git add .
+
+# Commit changes
+git commit -m "feat: add prototype pollution detection rule"
+
+# Push to GitHub
+git push -u origin main
+```
