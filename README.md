@@ -1,31 +1,21 @@
-# testSemgrep
+# Semgrep Security Rules Testing Guide
 
-# This is a project to test semgreps functionality
+A comprehensive guide for setting up and testing Semgrep security rules, focusing on prototype pollution detection.
 
-# Step 1
+## Quick Start
 
-## Create a repository in gitHub - gh repo create "repo name" --public or --private
+### Repository Setup
 
-# Step 2
+```bash
+# Create and initialize repository
+gh repo create "semgrep-security-rules" --public
+mkdir semgrep-security-rules
+cd semgrep-security-rules
+git init
+git remote add origin <your-github-repo-url>
+git branch -M main
 
-## Initialize the repository for version tracking with git init
-
-# Step 3
-
-## To add the remote origin do git remote add origin gitRepoYouJustCreated
-
-# Step 4
-
-## git branch -M main (Create main branch)
-
-# Step 5
-
-## git add . (Add changes)
-
-# Step 6
-
-## git commit -m "message" (Commit those changes)
-
-# Step 7
-
-## git push -u origin (push commits to gitHub repo)
+# Create project structure
+mkdir rules tests
+touch README.md
+```
