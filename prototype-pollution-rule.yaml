@@ -1,0 +1,19 @@
+rules:
+  - id: prototype-pollution-detection
+    languages:
+      - javascript
+    severity: ERROR
+    message: Potential prototype pollution vulnerability detected
+    pattern-either:
+      - patterns:
+          - pattern: $OBJ = {...}
+          - pattern: $OBJ = {...}
+          - pattern-not: $OBJ = Object.create(null)
+          - pattern-not: $OBJ = {__proto__:null}
+      - pattern: $OBJ.__proto__
+      - pattern: Object.assign($TARGET, $SOURCE)
+      - pattern: $OBJ.prototype
+      - pattern-inside: JSON.parse($INPUT)
+    fix: Set object to Object.create(null) or {__proto__:null}
+    metadata:
+      category: security

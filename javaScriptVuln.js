@@ -1,3 +1,42 @@
+// Vulnerable code pattern
+const userInput = '{"proto": {"malicious": true}}';
+$.extend(true, {}, JSON.parse(userInput));
+
+// Example 1
+$.extend(true, {}, JSON.parse(userInput));
+
+// Example 2 
+const data = JSON.parse(request.body);
+$.extend(true, config, data);
+
+// Example 3
+let userConfig = {};
+$.extend(true, userConfig, JSON.parse(localStorage.getItem('settings')));
+
+// Vulnerable code that should be caught
+function mergeUserSettings(userInput) {
+    let obj = {};
+    for (let key in JSON.parse(userInput)) {
+      obj[key] = JSON.parse(userInput)[key];
+    }
+    return obj;
+  }
+  function merge(target, source) {
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object') {
+        target[key] = merge(target[key] || {}, source[key]);
+      } else {
+        target[key] = source[key];
+      }
+    }
+    return target;
+  }
+  
+  // Exploitation
+  merge({}, JSON.parse('{"__proto__": {"polluted": true}}'));
+  
+  // Usage
+  mergeUserSettings('{"__proto__": {"isAdmin": true}}');
 // Vulnerable authentication function
 function authenticateUser(username, password) {
     // SQL Injection vulnerability update
