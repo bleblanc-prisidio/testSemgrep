@@ -33,8 +33,6 @@ git push -u origin
 # Testing the rule against test file
 # Test specific rule
 semgrep --config prototype-pollution-rule.yaml prototypePollutionTest.js
-
-
-![Project Structure](ppr.png)
-
 ```
+
+<img src="ppr.png" alt="Project Structure" width="400"/>
